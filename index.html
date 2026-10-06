@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gran Rifa Aven Tour · Santa Marta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-bar">
+  <span class="emoji">🎟️</span>
+  <div>
+    <h1>Gran Rifa Aven Tour</h1>
+    <p>Santa Marta · Sol, playa y aventura</p>
+  </div>
+</header>
+
+<div class="payment-banner">
+  <div class="payment-card">
+    <div class="payment-price">
+      <div class="amount">$40.000</div>
+      <div class="label">Valor de la boleta</div>
+    </div>
+    <div class="payment-instructions">
+      💳 Pagos a Nequi <span class="nequi-number">322 593 2486</span><br>
+      En la <b>descripción del pago</b> escribe tu <b>nombre completo</b>.<br>
+      Luego envía el <b>pantallazo del pago</b> por WhatsApp a ese mismo número: <b>322 593 2486</b>.
+    </div>
+  </div>
+</div>
+
+<main class="page-wrap">
+  <section class="promo-panel">
+    <!--
+      Imagen promocional: ya está puesta la que subiste
+      (guardada en assets/flyer.jpg). Para cambiarla, reemplaza
+      ese archivo por el tuyo usando el mismo nombre, o edita el "src".
+    -->
+    <img src="flyer.jpg" alt="Promoción Aven Tour - Santa Marta">
+    <p class="promo-caption"><b>$649.000</b> Incluye tiquetes ida y regreso, 3 noches de alojamiento, 3 desayunos, tour a Playa Blanca y traslado aeropuerto–Rodadero. Viajes disponibles Febrero a Mayo.</p>
+    <p class="contact-line">📲 Reservas e informes: 3225932486</p>
+  </section>
+
+  <section class="grid-panel">
+    <h2>Elige tu número</h2>
+    <div class="legend">
+      <span><span class="dot available"></span>Disponible</span>
+      <span><span class="dot pendiente"></span>Pago pendiente</span>
+      <span><span class="dot pagado"></span>Pago listo</span>
+    </div>
+    <p class="stats" id="stats">Cargando...</p>
+    <div class="grid" id="grid"></div>
+  </section>
+</main>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card">
+    <h3>Reservar número <span id="modalNum"></span></h3>
+    <label for="inpName">Nombre completo</label>
+    <input id="inpName" type="text" placeholder="Tu nombre" autocomplete="name">
+    <label for="inpPhone">Número de teléfono</label>
+    <input id="inpPhone" type="tel" placeholder="Ej: 3001234567" autocomplete="tel">
+    <p class="error-msg" id="modalError"></p>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelBtn">Cancelar</button>
+      <button class="btn-primary" id="confirmBtn">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<p class="footer-note">Rifa Viaje a Santa Marta para 1 Persona</p>
+
+<!-- Firebase (compat, no requiere herramientas de compilación) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

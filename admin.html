@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin · Gran Rifa Aven Tour</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="admin-wrap">
+
+  <div class="admin-card admin-login" id="loginBox">
+    <h1>🔒 Panel de administrador</h1>
+    <p class="sub">Inicia sesión con la cuenta que creaste en Firebase Authentication.</p>
+    <form id="loginForm">
+      <label for="adminEmail">Correo</label>
+      <input id="adminEmail" type="email" required autocomplete="username">
+      <label for="adminPass">Contraseña</label>
+      <input id="adminPass" type="password" required autocomplete="current-password">
+      <p class="error-msg" id="loginError"></p>
+      <button type="submit" class="btn-primary" style="width:100%;">Entrar</button>
+    </form>
+  </div>
+
+  <div class="admin-card admin-panel" id="panelBox">
+    <h1>🎟️ Reservas de la rifa</h1>
+    <p class="sub" id="resumen">Cargando...</p>
+    <button class="btn-primary" id="exportBtn">⬇️ Descargar Excel (.xlsx)</button>
+    <button class="btn-secondary" id="logoutBtn" style="margin-left:10px;">Cerrar sesión</button>
+    <button class="btn-danger" id="resetBtn" style="margin-left:10px;">🗑️ Reiniciar rifa (borrar todo)</button>
+    <table class="admin-table" id="tablaReservas">
+      <thead>
+        <tr><th>N°</th><th>Nombre</th><th>Teléfono</th><th>Fecha</th><th>Estado de pago</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Firebase (compat) + SheetJS para exportar a Excel -->
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/[email protected]/dist/xlsx.full.min.js"></script>
+<script src="firebase-config.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
+
