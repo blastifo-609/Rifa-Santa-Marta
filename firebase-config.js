@@ -14,13 +14,14 @@
 // ============================================================
 
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROYECTO.firebaseapp.com",
-  databaseURL: "https://TU_PROYECTO-default-rtdb.firebaseio.com",
-  projectId: "TU_PROYECTO",
-  storageBucket: "TU_PROYECTO.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:xxxxxxxxxxxxxxxxxxxxxx"
+  apiKey: "AIzaSyCu1jK76B-Q1fzRqnpVopbERvFx-k5_5SA",
+  authDomain: "rifa-santa-marta.firebaseapp.com",
+  databaseURL: "https://rifa-santa-marta-default-rtdb.firebaseio.com",
+  projectId: "rifa-santa-marta",
+  storageBucket: "rifa-santa-marta.firebasestorage.app",
+  messagingSenderId: "194162681720",
+  appId: "1:194162681720:web:6fe71ea606adbaadb28a8d",
+  measurementId: "G-T9HTP58F5Y" // Opcional, pero incluido para analíticas
 };
 
 firebase.initializeApp(firebaseConfig);
