@@ -21,14 +21,21 @@ const exportBtn = document.getElementById('exportBtn');
 const tablaBody = document.querySelector('#tablaReservas tbody');
 const resumenEl = document.getElementById('resumen');
 
+let estadoData = {};
+let reservasData = {};
+let reservasCache = [];
+
 auth.onAuthStateChanged(user => {
   if(user){
     loginBox.classList.add('hidden');
     panelBox.classList.add('open');
-    cargarReservas();
+    db.ref('rifa/estado').on('value', snap => { estadoData = snap.val() || {}; combinarYRenderizar(); });
+    db.ref('rifa/reservas').on('value', snap => { reservasData = snap.val() || {}; combinarYRenderizar(); });
   } else {
     loginBox.classList.remove('hidden');
     panelBox.classList.remove('open');
+    db.ref('rifa/estado').off();
+    db.ref('rifa/reservas').off();
   }
 });
 
@@ -46,29 +53,55 @@ loginForm.addEventListener('submit', async e => {
 
 logoutBtn.addEventListener('click', () => auth.signOut());
 
-let reservasCache = [];
-
-async function cargarReservas(){
-  const snap = await db.ref('rifa/reservas').once('value');
-  const data = snap.val() || {};
-  reservasCache = Object.keys(data)
+function combinarYRenderizar(){
+  reservasCache = Object.keys(reservasData)
     .map(n => ({
       numero: Number(n),
-      nombre: data[n].nombre,
-      telefono: data[n].telefono,
-      fecha: data[n].fecha ? new Date(data[n].fecha).toLocaleString('es-CO') : ''
+      nombre: reservasData[n].nombre,
+      telefono: reservasData[n].telefono,
+      fecha: reservasData[n].fecha ? new Date(reservasData[n].fecha).toLocaleString('es-CO') : '',
+      // cualquier valor antiguo (p. ej. el booleano true) se trata como "pendiente"
+      estadoPago: estadoData[n] === 'pagado' ? 'pagado' : 'pendiente'
     }))
     .sort((a, b) => a.numero - b.numero);
 
+  renderTabla();
+}
+
+function renderTabla(){
   resumenEl.textContent = `${reservasCache.length} de 100 números reservados`;
+
   tablaBody.innerHTML = reservasCache.map(r => `
     <tr>
       <td>${String(r.numero).padStart(2, '0')}</td>
       <td>${escapeHtml(r.nombre)}</td>
       <td>${escapeHtml(r.telefono)}</td>
       <td>${r.fecha}</td>
+      <td>
+        <select class="estado-select ${r.estadoPago}" data-numero="${r.numero}">
+          <option value="pendiente" ${r.estadoPago === 'pendiente' ? 'selected' : ''}>⏳ Pago pendiente</option>
+          <option value="pagado" ${r.estadoPago === 'pagado' ? 'selected' : ''}>✅ Pago listo</option>
+        </select>
+      </td>
     </tr>
   `).join('');
+
+  tablaBody.querySelectorAll('.estado-select').forEach(sel => {
+    sel.addEventListener('change', () => cambiarEstadoPago(Number(sel.dataset.numero), sel.value, sel));
+  });
+}
+
+async function cambiarEstadoPago(numero, nuevoEstado, selectEl){
+  selectEl.disabled = true;
+  try{
+    await db.ref('rifa/estado/' + numero).set(nuevoEstado);
+    // el listener en tiempo real se encarga de volver a pintar la tabla
+  }catch(err){
+    alert('No se pudo actualizar el estado de pago. Intenta de nuevo.');
+    console.error(err);
+  }finally{
+    selectEl.disabled = false;
+  }
 }
 
 function escapeHtml(s){
@@ -84,10 +117,11 @@ exportBtn.addEventListener('click', () => {
     'Número': String(r.numero).padStart(2, '0'),
     'Nombre': r.nombre,
     'Teléfono': r.telefono,
-    'Fecha de reserva': r.fecha
+    'Fecha de reserva': r.fecha,
+    'Estado de pago': r.estadoPago === 'pagado' ? 'Pago listo' : 'Pago pendiente'
   }));
   const hoja = XLSX.utils.json_to_sheet(filas);
-  hoja['!cols'] = [{ wch: 10 }, { wch: 28 }, { wch: 16 }, { wch: 20 }];
+  hoja['!cols'] = [{ wch: 10 }, { wch: 28 }, { wch: 16 }, { wch: 20 }, { wch: 16 }];
   const libro = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(libro, hoja, 'Reservas');
   const fechaArchivo = new Date().toISOString().slice(0, 10);
