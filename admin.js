@@ -53,6 +53,35 @@ loginForm.addEventListener('submit', async e => {
 
 logoutBtn.addEventListener('click', () => auth.signOut());
 
+const resetBtn = document.getElementById('resetBtn');
+resetBtn.addEventListener('click', async () => {
+  const ok = confirm('Esto borra TODAS las reservas (nombres, teléfonos y estado de pago) y deja los 100 números disponibles otra vez. No se puede deshacer. ¿Continuar?');
+  if(!ok) return;
+
+  resetBtn.disabled = true;
+  resetBtn.textContent = 'Reiniciando...';
+
+  // Se borra número por número (en una sola actualización atómica) para
+  // respetar exactamente las mismas reglas de seguridad ya definidas en
+  // database.rules.json, sin tener que volver a pegarlas en Firebase.
+  const updates = {};
+  for(let i = 1; i <= 100; i++){
+    updates[`rifa/estado/${i}`] = null;
+    updates[`rifa/reservas/${i}`] = null;
+  }
+
+  try{
+    await db.ref().update(updates);
+    alert('Listo, la rifa quedó en cero.');
+  }catch(err){
+    alert('No se pudo reiniciar. Intenta de nuevo.');
+    console.error(err);
+  }finally{
+    resetBtn.disabled = false;
+    resetBtn.textContent = '🗑️ Reiniciar rifa (borrar todo)';
+  }
+});
+
 function combinarYRenderizar(){
   reservasCache = Object.keys(reservasData)
     .map(n => ({
