@@ -1,0 +1,25 @@
+{
+  "rules": {
+    "rifa": {
+
+      "estado": {
+        ".read": true,
+        "$numero": {
+          ".write": "auth != null || (!data.exists() && newData.val() === 'pendiente')",
+          ".validate": "$numero >= 1 && $numero <= 100 && newData.isString() && (newData.val() === 'pendiente' || newData.val() === 'pagado')"
+        }
+      },
+
+      "reservas": {
+        ".read": "auth != null",
+        "$numero": {
+          ".write": "auth != null || !data.exists()",
+          ".validate": "newData.hasChildren(['nombre','telefono','fecha']) && newData.child('nombre').isString() && newData.child('nombre').val().length > 0 && newData.child('nombre').val().length < 100 && newData.child('telefono').isString() && newData.child('telefono').val().length >= 7 && newData.child('telefono').val().length < 20"
+        }
+      },
+
+      ".read": false,
+      ".write": false
+    }
+  }
+}
