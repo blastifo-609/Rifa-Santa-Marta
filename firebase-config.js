@@ -21,7 +21,7 @@ const firebaseConfig = {
   storageBucket: "rifa-santa-marta.firebasestorage.app",
   messagingSenderId: "194162681720",
   appId: "1:194162681720:web:6fe71ea606adbaadb28a8d",
-  measurementId: "G-T9HTP58F5Y" // Opcional, pero incluido para analíticas
+  measurementId: "G-T9HTP58F5Y"
 };
 
 firebase.initializeApp(firebaseConfig);
