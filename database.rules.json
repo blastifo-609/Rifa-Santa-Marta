@@ -6,7 +6,7 @@
         ".read": true,
         "$numero": {
           ".write": "auth != null || (!data.exists() && newData.val() === 'pendiente')",
-          ".validate": "$numero >= 1 && $numero <= 100 && newData.isString() && (newData.val() === 'pendiente' || newData.val() === 'pagado')"
+          ".validate": "newData.isString() && (newData.val() === 'pendiente' || newData.val() === 'pagado')"
         }
       },
 
