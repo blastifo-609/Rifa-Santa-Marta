@@ -145,21 +145,30 @@ function escapeHtml(s){
 }
 
 exportBtn.addEventListener('click', () => {
+  if(typeof XLSX === 'undefined'){
+    alert('No se pudo cargar la librería de Excel (revisa tu conexión a internet y recarga la página). Si el problema sigue, avísame.');
+    return;
+  }
   if(reservasCache.length === 0){
     alert('Todavía no hay números reservados.');
     return;
   }
-  const filas = reservasCache.map(r => ({
-    'Número': String(r.numero).padStart(2, '0'),
-    'Nombre': r.nombre,
-    'Teléfono': r.telefono,
-    'Fecha de reserva': r.fecha,
-    'Estado de pago': r.estadoPago === 'pagado' ? 'Pago listo' : 'Pago pendiente'
-  }));
-  const hoja = XLSX.utils.json_to_sheet(filas);
-  hoja['!cols'] = [{ wch: 10 }, { wch: 28 }, { wch: 16 }, { wch: 20 }, { wch: 16 }];
-  const libro = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(libro, hoja, 'Reservas');
-  const fechaArchivo = new Date().toISOString().slice(0, 10);
-  XLSX.writeFile(libro, `rifa_reservas_${fechaArchivo}.xlsx`);
+  try{
+    const filas = reservasCache.map(r => ({
+      'Número': String(r.numero).padStart(2, '0'),
+      'Nombre': r.nombre,
+      'Teléfono': r.telefono,
+      'Fecha de reserva': r.fecha,
+      'Estado de pago': r.estadoPago === 'pagado' ? 'Pago listo' : 'Pago pendiente'
+    }));
+    const hoja = XLSX.utils.json_to_sheet(filas);
+    hoja['!cols'] = [{ wch: 10 }, { wch: 28 }, { wch: 16 }, { wch: 20 }, { wch: 16 }];
+    const libro = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(libro, hoja, 'Reservas');
+    const fechaArchivo = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(libro, `rifa_reservas_${fechaArchivo}.xlsx`);
+  }catch(err){
+    alert('No se pudo generar el Excel. Intenta de nuevo.');
+    console.error(err);
+  }
 });
