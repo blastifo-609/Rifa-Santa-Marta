@@ -144,16 +144,30 @@ function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-exportBtn.addEventListener('click', () => {
-  if(typeof XLSX === 'undefined'){
-    alert('No se pudo cargar la librería de Excel (revisa tu conexión a internet y recarga la página). Si el problema sigue, avísame.');
-    return;
-  }
+let xlsxLoadPromise = null;
+function cargarXLSX(){
+  if(typeof XLSX !== 'undefined') return Promise.resolve();
+  if(xlsxLoadPromise) return xlsxLoadPromise;
+  xlsxLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    script.onload = () => resolve();
+    script.onerror = () => { xlsxLoadPromise = null; reject(new Error('No se pudo cargar la librería de Excel')); };
+    document.head.appendChild(script);
+  });
+  return xlsxLoadPromise;
+}
+
+exportBtn.addEventListener('click', async () => {
   if(reservasCache.length === 0){
     alert('Todavía no hay números reservados.');
     return;
   }
+  exportBtn.disabled = true;
+  const textoOriginal = exportBtn.textContent;
+  exportBtn.textContent = 'Preparando...';
   try{
+    await cargarXLSX();
     const filas = reservasCache.map(r => ({
       'Número': String(r.numero).padStart(2, '0'),
       'Nombre': r.nombre,
@@ -168,7 +182,10 @@ exportBtn.addEventListener('click', () => {
     const fechaArchivo = new Date().toISOString().slice(0, 10);
     XLSX.writeFile(libro, `rifa_reservas_${fechaArchivo}.xlsx`);
   }catch(err){
-    alert('No se pudo generar el Excel. Intenta de nuevo.');
+    alert('No se pudo generar el Excel (revisa tu conexión a internet). Intenta de nuevo.');
     console.error(err);
+  }finally{
+    exportBtn.disabled = false;
+    exportBtn.textContent = textoOriginal;
   }
 });
