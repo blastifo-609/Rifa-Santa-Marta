@@ -105,8 +105,10 @@ a{color:inherit;}
 .error-msg{color:var(--error);min-height:18px;font-size:.85rem;margin:-6px 0 8px;}
 
 /* --- Admin panel --- */
-.admin-wrap{max-width:480px;margin:60px auto;padding:0 20px;}
+.admin-wrap{max-width:900px;margin:60px auto;padding:0 20px;}
+.admin-wrap:has(.admin-login:not(.hidden)){max-width:480px;}
 .admin-card{background:var(--card);color:var(--ink);border-radius:18px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.3);}
+.table-scroll{overflow-x:auto;}
 .admin-card h1{font-size:1.4rem;margin-bottom:6px;color:var(--ink);}
 .admin-card p.sub{opacity:.7;font-size:.9rem;margin-bottom:18px;}
 .admin-card label{display:block;font-size:.85rem;font-weight:600;margin-bottom:4px;}
@@ -116,6 +118,7 @@ a{color:inherit;}
 .estado-select{padding:6px 8px;border-radius:8px;border:1px solid #c7d0d8;font-size:.88rem;font-weight:700;}
 .estado-select.pendiente{background:#fff1ea;color:var(--pendiente-dark);}
 .estado-select.pagado{background:#e9faf2;color:var(--pagado-dark);}
+.admin-actions{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0 20px;}
 .admin-panel{display:none;}
 .admin-panel.open{display:block;}
 .admin-login.hidden{display:none;}
