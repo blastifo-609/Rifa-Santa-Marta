@@ -30,25 +30,17 @@
   <div class="admin-card admin-panel" id="panelBox">
     <h1>🎟️ Reservas de la rifa</h1>
     <p class="sub" id="resumen">Cargando...</p>
-    <button class="btn-primary" id="exportBtn">⬇️ Descargar Excel (.xlsx)</button>
-    <button class="btn-secondary" id="logoutBtn" style="margin-left:10px;">Cerrar sesión</button>
-    <button class="btn-danger" id="resetBtn" style="margin-left:10px;">🗑️ Reiniciar rifa (borrar todo)</button>
-    <table class="admin-table" id="tablaReservas">
-      <thead>
-        <tr><th>N°</th><th>Nombre</th><th>Teléfono</th><th>Fecha</th><th>Estado de pago</th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="admin-actions">
+      <button class="btn-primary" id="exportBtn">⬇️ Descargar Excel (.xlsx)</button>
+      <button class="btn-secondary" id="logoutBtn">Cerrar sesión</button>
+      <button class="btn-danger" id="resetBtn">🗑️ Reiniciar rifa (borrar todo)</button>
+    </div>
+    <div class="table-scroll">
+      <table class="admin-table" id="tablaReservas">
+        <thead>
+          <tr><th>N°</th><th>Nombre</th><th>Teléfono</th><th>Fecha</th><th>Estado de pago</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
-
-</div>
-
-<!-- Firebase (compat) + SheetJS para exportar a Excel -->
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/[email protected]/dist/xlsx.full.min.js"></script>
-<script src="firebase-config.js"></script>
-<script src="admin.js"></script>
-</body>
-</html>
